@@ -6,6 +6,8 @@ import Article from "../components/Article";
 
 const News = () => {
   const [newsData, setNewsData] = useState([]);
+  const [author, setAuthor] = useState("");
+  const [content, setContent] = useState("");
 
   useEffect(() => {
     getData();
@@ -17,15 +19,39 @@ const News = () => {
       .then((res) => setNewsData(res.data));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:3003/articles", {
+        author: author,
+        content: content,
+        date: Date.now(),
+      })
+      .then(() => {
+        setAuthor("");
+        setContent("");
+        getData();
+      });
+  };
+
   return (
     <div className="news-container">
       <Navigation />
       <Logo />
       <h1>News</h1>
 
-      <form>
-        <input type="text" placeholder="Nom" />
-        <textarea placeholder="Message"></textarea>
+      <form onSubmit={handleSubmit}>
+        <input
+          onChange={(e) => setAuthor(e.target.value)}
+          type="text"
+          placeholder="Nom"
+          value={author}
+        />
+        <textarea
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Message"
+          value={content}
+        ></textarea>
         <input type="submit" value="Envoyer" />
       </form>
       <ul>
