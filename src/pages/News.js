@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navigation from "../components/Navigation";
 import Logo from "../components/Logo";
+import axios from "axios";
+import Article from "../components/Article";
 
 const News = () => {
+  const [newsData, setNewsData] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = () => {
+    axios
+      .get("http://localhost:3003/articles")
+      .then((res) => setNewsData(res.data));
+  };
+
   return (
     <div className="news-container">
       <Navigation />
@@ -14,7 +28,11 @@ const News = () => {
         <textarea placeholder="Message"></textarea>
         <input type="submit" value="Envoyer" />
       </form>
-      <ul></ul>
+      <ul>
+        {newsData.map((article) => (
+          <Article key={article.id} article={article} />
+        ))}
+      </ul>
     </div>
   );
 };
