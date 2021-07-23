@@ -6,6 +6,8 @@ const Article = ({ article }) => {
       day: "numeric",
       month: "long",
       year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
     });
     return newDate;
   };
